@@ -44,7 +44,18 @@ export interface MostReadableOptions extends WCAG2Options {
   includeFallbackColors?: boolean;
 }
 
-export type ColorFormat = "rgb" | "prgb" | "hex" | "hex3" | "hex4" | "hex6" | "hex8" | "name" | "hsl" | "hsv";
+export enum ColorFormat {
+  RGB = "rgb",
+  PRGB = "prgb", 
+  HEX = "hex",
+  HEX3 = "hex3",
+  HEX4 = "hex4", 
+  HEX6 = "hex6",
+  HEX8 = "hex8",
+  NAME = "name",
+  HSL = "hsl",
+  HSV = "hsv"
+}
 
 interface ParsedColor {
   r?: any;
@@ -336,44 +347,44 @@ tinycolorConstructor.prototype = {
     var needsAlphaFormat =
       !formatSet &&
       hasAlpha &&
-      (format === "hex" ||
-        format === "hex6" ||
-        format === "hex3" ||
-        format === "hex4" ||
-        format === "hex8" ||
-        format === "name");
+      (format === ColorFormat.HEX ||
+        format === ColorFormat.HEX6 ||
+        format === ColorFormat.HEX3 ||
+        format === ColorFormat.HEX4 ||
+        format === ColorFormat.HEX8 ||
+        format === ColorFormat.NAME);
 
     if (needsAlphaFormat) {
-      if (format === "name" && this._a === 0) {
+      if (format === ColorFormat.NAME && this._a === 0) {
         return this.toName() as string;
       }
       return this.toRgbString();
     }
-    if (format === "rgb") {
+    if (format === ColorFormat.RGB) {
       formattedString = this.toRgbString();
     }
-    if (format === "prgb") {
+    if (format === ColorFormat.PRGB) {
       formattedString = this.toPercentageRgbString();
     }
-    if (format === "hex" || format === "hex6") {
+    if (format === ColorFormat.HEX || format === ColorFormat.HEX6) {
       formattedString = this.toHexString();
     }
-    if (format === "hex3") {
+    if (format === ColorFormat.HEX3) {
       formattedString = this.toHexString(true);
     }
-    if (format === "hex4") {
+    if (format === ColorFormat.HEX4) {
       formattedString = this.toHex8String(true);
     }
-    if (format === "hex8") {
+    if (format === ColorFormat.HEX8) {
       formattedString = this.toHex8String();
     }
-    if (format === "name") {
+    if (format === ColorFormat.NAME) {
       formattedString = this.toName();
     }
-    if (format === "hsl") {
+    if (format === ColorFormat.HSL) {
       formattedString = this.toHslString();
     }
-    if (format === "hsv") {
+    if (format === ColorFormat.HSV) {
       formattedString = this.toHsvString();
     }
 
@@ -500,7 +511,7 @@ function inputToRGB(color: ColorInput): ParsedColor {
       v = convertToPercentage((color as any).v);
       rgb = hsvToRgb((color as any).h, s, v);
       ok = true;
-      format = "hsv";
+      format = ColorFormat.HSV;
     } else if (
       isValidCSSUnit((color as any).h) &&
       isValidCSSUnit((color as any).s) &&
@@ -510,7 +521,7 @@ function inputToRGB(color: ColorInput): ParsedColor {
       l = convertToPercentage((color as any).l);
       rgb = hslToRgb((color as any).h, s, l);
       ok = true;
-      format = "hsl";
+      format = ColorFormat.HSL;
     }
 
     if ((color as any).hasOwnProperty("a")) {
