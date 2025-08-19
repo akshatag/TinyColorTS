@@ -20,8 +20,10 @@
   "module": "./esm/tinycolor.js",
   "main": "./cjs/tinycolor.js",
   "browser": "./cjs/tinycolor.js",
+  "types": "./mod.d.ts",
   "exports": {
     ".": {
+      "types": "./mod.d.ts",
       "import": "./esm/tinycolor.js",
       "require": "./cjs/tinycolor.js"
     }

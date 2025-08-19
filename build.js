@@ -1,6 +1,7 @@
 import { rollup } from "npm:rollup@3.13.0";
 import { minify } from "npm:terser@5.16.1";
 import { babel } from "npm:@rollup/plugin-babel@6.0.3";
+import typescript from "npm:@rollup/plugin-typescript@11.1.0";
 // This import is required for presetEnv to work:
 import _ from "https://esm.sh/@babel/core@7.20.12";
 import babelPresetEnv from "https://esm.sh/@babel/preset-env@7.20.2";
@@ -8,6 +9,11 @@ import babelPresetEnv from "https://esm.sh/@babel/preset-env@7.20.2";
 let bundle = await rollup({
   input: "mod.js",
   plugins: [
+    typescript({
+      tsconfig: "./tsconfig.json",
+      declaration: false,
+      declarationMap: false,
+    }),
     babel({
       babelHelpers: "bundled",
       presets: [[babelPresetEnv]],
@@ -93,9 +99,30 @@ async function write_npm_esm() {
   );
 }
 
+async function write_typescript_declarations() {
+  let declarationBundle = await rollup({
+    input: "mod.js",
+    plugins: [
+      typescript({
+        tsconfig: "./tsconfig.json",
+        declaration: true,
+        declarationMap: true,
+        emitDeclarationOnly: true,
+        outDir: "./npm",
+      }),
+    ],
+  });
+  
+  await declarationBundle.write({
+    format: "esm",
+    dir: "./npm",
+  });
+}
+
 await write_cdn_umd();
 await write_npm_cjs();
 await write_npm_esm();
+await write_typescript_declarations();
 
 await Deno.copyFile("README.md", "npm/README.md");
 await Deno.copyFile("LICENSE", "npm/LICENSE");

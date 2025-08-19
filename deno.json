@@ -10,10 +10,11 @@
     "publish-beta": "deno task build && cd npm && npm publish --tag beta --access public"
   },
   "test": {
-    "files": {
-      "exclude": [
-        "npm"
-      ]
-    }
+    "exclude": [
+      "npm/**"
+    ]
+  },
+  "imports": {
+    "@deno/shim-deno-test": "npm:@deno/shim-deno-test@^0.5.0"
   }
 }
