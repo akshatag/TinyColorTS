@@ -488,7 +488,9 @@ function inputToRGB(color: ColorInput): ParsedColor {
     ) {
       rgb = rgbToRgb((color as any).r, (color as any).g, (color as any).b);
       ok = true;
-      format = String((color as any).r).substr(-1) === "%" ? "prgb" : "rgb";
+      // Preserve an existing format if provided by the parser (e.g., "name" for 'transparent')
+      // otherwise infer based on whether r was specified as a percentage.
+      format = (color as any).format || (String((color as any).r).substr(-1) === "%" ? "prgb" : "rgb");
     } else if (
       isValidCSSUnit((color as any).h) &&
       isValidCSSUnit((color as any).s) &&
