@@ -19,6 +19,6 @@
     "preserveConstEnums": true,
     "removeComments": false
   },
-  "include": ["mod.js", "test.js"],
+  "include": ["mod.ts", "test.js"],
   "exclude": ["node_modules", "npm", "dist"]
 }

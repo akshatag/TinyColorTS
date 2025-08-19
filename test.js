@@ -3,7 +3,7 @@ import {
   assertEquals,
   assertThrows,
 } from "https://deno.land/std@0.168.0/testing/asserts.ts";
-import tinycolor from "./mod.js";
+import tinycolor from "./mod.ts";
 
 // The following comment is used by build.js to copy tests to cjs:
 // TEST_BEGINS_HERE
